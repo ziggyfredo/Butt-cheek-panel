@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Butt Cheek Panel</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: black;
+            color: lime;
+            font-family: "Courier New", monospace;
+            text-align: center;
+        }
+        #error-message {
+            font-size: 24px;
+            border: 2px solid red;
+            padding: 20px;
+            background-color: #222;
+            box-shadow: 0 0 10px red;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        #error-message:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body>
+    <div id="error-message" onclick="startPrank()">
+        <p>⚠ ERROR: SYSTEM FAILURE – GAME FILES NOT FOUND ⚠</p>
+        <p>SCAN REQUIRED TO RESOLVE (Click to Scan)</p>
+    </div>
+
+    <script>
+        const images = [
+            "https://assets.onecompiler.app/437rezxye/437tnsqp9/default.jpg",
+            "https://assets.onecompiler.app/437rezxye/437sanauc/A13660EE-297B-4792-8E9C-51DA74C8581E.gif",
+            "https://assets.onecompiler.app/437rezxye/437sanauc/1566303740668.jpg",
+            "https://assets.onecompiler.app/437rezxye/437rfb8u5/a_dd0494c13c8c02829a149cb43ea8c8ae.gif",
+            "https://assets.onecompiler.app/437rezxye/437rfb8u5/a3461d2b9c0384972fe2e51de6bbe16c83cdd629.gif",
+            "https://assets.onecompiler.app/437rezxye/437rf2ecw/8zmonu.gif"
+        ];
+
+        let userIP = "Fetching IP...";
+        let popups = [];
+
+        // Get user's IP and display it flashing
+        fetch("https://api64.ipify.org?format=json")
+            .then(response => response.json())
+            .then(data => { 
+                userIP = `YOUR IP: ${data.ip}`; 
+            })
+            .catch(() => { userIP = "Could not fetch IP"; });
+
+        function startPrank() {
+            // Play the loud, ear-piercing sound in a loop
+            let sound = new Audio("https://www.soundjay.com/button/beep-07.wav");
+            sound.loop = true;
+            sound.play();
+
+            // Open Discord link
+            window.open("https://discord.gg/toslovers", "_blank");
+
+            // Start opening popups
+            for (let i = 0; i < 20; i++) {
+                createPopup();
+            }
+
+            // Every 5 seconds, create 5 more popups
+            setInterval(() => {
+                for (let i = 0; i < 5; i++) {
+                    createPopup();
+                }
+            }, 5000);
+
+            animatePopups();
+        }
+
+        function createPopup() {
+            let imageURL = images[Math.floor(Math.random() * images.length)];
+            let popup = window.open("", "_blank", "width=300,height=300,left=100,top=100");
+
+            if (popup) {
+                let popupContent = `
+                    <html>
+                        <head><title>BBCBUBBA1 ON DISC</title></head>
+                        <body style="background-color:black; text-align:center; font-family:Arial;">
+                            <h1 style="font-size: 50px; color:red;">${userIP}</h1>
+                            <img src="${imageURL}" style="width:100%; height:auto;">
+                        </body>
+                    </html>
+                `;
+
+                popup.document.open();
+                popup.document.write(popupContent);
+                popup.document.close();
+
+                popups.push({
+                    window: popup,
+                    x: Math.random() * (window.innerWidth - 300),
+                    y: Math.random() * (window.innerHeight - 300),
+                    dx: (Math.random() - 0.5) * 10,
+                    dy: (Math.random() - 0.5) * 10
+                });
+            }
+        }
+
+        function animatePopups() {
+            setInterval(() => {
+                popups.forEach(popupObj => {
+                    if (!popupObj.window || popupObj.window.closed) return;
+
+                    popupObj.x += popupObj.dx;
+                    popupObj.y += popupObj.dy;
+
+                    if (popupObj.x <= 0 || popupObj.x + 300 >= window.innerWidth) {
+                        popupObj.dx *= -1;
+                    }
+                    if (popupObj.y <= 0 || popupObj.y + 300 >= window.innerHeight) {
+                        popupObj.dy *= -1;
+                    }
+
+                    popupObj.window.moveTo(popupObj.x, popupObj.y);
+                });
+            }, 50);
+        }
+    </script>
+</body>
+</html>
